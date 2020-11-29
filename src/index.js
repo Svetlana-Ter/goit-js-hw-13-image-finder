@@ -27,13 +27,20 @@ function onImagesSearch(e) {
 }
 
 function onLoadMore() {
-  apiService.fetchImages().then(renderImages);
 
-  window.scrollBy({
-    top: -window.innerHeight,
-    behavior: 'smooth'
+  apiService.fetchImages().then(images => {
+    const { y } = refs.galleryContainer.getBoundingClientRect();
+    const screenHeight = document.documentElement.clientHeight;
+
+    renderImages(images);
+
+    window.scrollTo({
+      top: screenHeight - y,
+      behavior: 'smooth'
+    });
   });
 }
+
 
 function renderImages(images) {
   const markup = imageCardTemplate(images);
