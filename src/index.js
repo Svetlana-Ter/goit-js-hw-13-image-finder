@@ -3,6 +3,11 @@ import './basicLightbox.min.css';
 import ApiService from './apiService';
 import imageCardTemplate from './image-card.hbs';
 import * as basicLightbox from 'basiclightbox';
+import '@pnotify/core/dist/BrightTheme.css';
+import '@pnotify/core/dist/PNotify.css';
+import { info, defaults } from '@pnotify/core';
+defaults.delay = 1000;
+
 
 const refs = {
   form: document.querySelector('#search-form'),
@@ -19,28 +24,32 @@ refs.btn.addEventListener('click', onLoadMore)
 function onImagesSearch(e) {
   e.preventDefault();
   apiService.query = e.currentTarget.elements.query.value;
-  apiService.resetPage();
-  apiService.fetchImages().then(images => {
+  if (!e.currentTarget.elements.query.value) {
+    info({
+      title: 'Write something for search',
+    });
+  } else if (e.currentTarget.elements.query.value) {
+    apiService.resetPage();
+    apiService.fetchImages().then(images => {
     clearContainer();
     renderImages(images);
-  });
+    });
+  }
 }
 
 function onLoadMore() {
-
   apiService.fetchImages().then(images => {
-    const { y } = refs.galleryContainer.getBoundingClientRect();
-    const screenHeight = document.documentElement.clientHeight;
+      const { y } = refs.galleryContainer.getBoundingClientRect();
+      const screenHeight = document.documentElement.clientHeight;
 
-    renderImages(images);
+      renderImages(images);
 
-    window.scrollTo({
-      top: screenHeight - y,
-      behavior: 'smooth'
-    });
-  });
+      window.scrollTo({
+        top: screenHeight - y,
+        behavior: 'smooth'
+      });
+  })
 }
-
 
 function renderImages(images) {
   const markup = imageCardTemplate(images);
@@ -58,4 +67,6 @@ function onImageClick(e) {
     `<img src="${url}" width="75vw">
   `).show()
 }
+
+
 

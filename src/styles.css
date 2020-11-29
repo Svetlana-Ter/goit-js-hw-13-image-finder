@@ -25,10 +25,6 @@ ul {
   list-style: none;
 }
 
-img {
-  width: 100%;
-  height: 100%;
-}
 .search-form input,
 button {
   padding: 10px;
@@ -42,11 +38,17 @@ button {
   margin: 20px -10px;
 }
 
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .photo-card {
   position: relative;
-  max-width: calc((100% - 80px) / 4);
+  width: calc((100% - 80px) / 4);
   margin: 10px;
-  max-height: max-content;
+  height: 250px;
 }
 
 .stats {

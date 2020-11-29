@@ -1,5 +1,9 @@
 const BASE_URL = 'https://pixabay.com/api';
 const key = '19220688-570d8444e3e62b8d826a97ca4';
+import '@pnotify/core/dist/BrightTheme.css';
+import '@pnotify/core/dist/PNotify.css';
+import { error } from '@pnotify/core';
+import { info } from '@pnotify/core';
 
 export default class ApiService {
   constructor() {
@@ -12,10 +16,17 @@ export default class ApiService {
     return fetch(url)
       .then(response => response.json())
       .then(data => {
+      if (data.total === 0) {
+        info({
+        title: 'Not found! Try again!',
+      });
+      } else {
         this.incrementPage();
         return data.hits;
+      }
+
       })
-      .catch(er => console.log(er))
+      .catch(this.onFetchError);
   }
 
   get query() {
@@ -32,5 +43,11 @@ export default class ApiService {
 
   resetPage() {
     this.page = 1;
+  }
+
+  onFetchError(er) {
+  error({
+    title: 'Something went wrong! Try again',
+  });
   }
 }
