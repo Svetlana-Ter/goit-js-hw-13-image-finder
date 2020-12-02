@@ -16,7 +16,7 @@ const refs = {
 }
 
 const apiService = new ApiService();
-
+refs.btn.disabled = true;
 
 refs.form.addEventListener('submit', onImagesSearch);
 refs.btn.addEventListener('click', onLoadMore)
@@ -31,8 +31,9 @@ function onImagesSearch(e) {
   } else if (e.currentTarget.elements.query.value) {
     apiService.resetPage();
     apiService.fetchImages().then(images => {
-    clearContainer();
-    renderImages(images);
+      clearContainer();
+      renderImages(images);
+      refs.btn.disabled = false;
     });
   }
 }

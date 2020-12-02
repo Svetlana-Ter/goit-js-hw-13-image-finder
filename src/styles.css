@@ -72,3 +72,8 @@ img {
   cursor: pointer;
   font-weight: bold;
 }
+
+.btn:disabled {
+  cursor: default;
+  border: 1px solid #cecece;
+}
